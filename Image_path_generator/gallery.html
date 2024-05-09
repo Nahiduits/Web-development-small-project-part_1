@@ -1,0 +1,89 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+ </head>
+ <body>
+    <section>
+    <h1>Placeholder Image path Generator</h1>
+    <div>
+        <label for="selectImage">Image Size: </label>
+        <select  id="selectImage">
+            <option value="150*50">Small (100*50)</option>
+            <option value="200*200">Medium Square (200*200)</option>
+            <option value="350*150">Medium (350*150)</option>
+            <option value="400*400">Large Square (400*400)</option>
+            <option value="650*350">Large (650*350)</option>
+            <option value="800*600">X-Large (800*600)</option>
+            <option value="1920*1080">Full HD (1920*1080)</option>
+        </select>
+    </div>
+    <br>
+    <div class="parent">
+        <label for="nameOnImage">Text on Image</label>
+        <input type="text" name="" id="nameOnImage">
+    </div>
+    <br>
+    <div class="parent">
+        <label for="backgroundColor">Color of Background</label>
+        <input type="color" name="" id="backgroundColor">
+    </div>
+    <br>
+    <div class="parent">
+        <label for="textColor">Color of Text</label>
+        <input type="color" name="" class="style1" value="#2C5F2D" id="textColor">
+    </div>
+    <div class="container">
+        <img src="" alt="">
+        <br>
+        <textarea name="" id="urlPath" cols="20" rows="20">Link will be available here</textarea>
+    </div>
+    </section>
+    <script>
+        const select = document.querySelector('select');
+        const inputAll = document.querySelectorAll('input');
+        let myImg = document.querySelector("img");
+        let textArea = document.querySelector("textarea");
+
+
+        let urlObj = {};
+        
+       const addPlus = (str) =>{
+           return str.split(" ").join("+");
+       }
+
+
+        const createImagepath = () => {
+            
+            urlObj.size = select.value;
+            urlObj.text = addPlus(inputAll[0].value);
+            urlObj.bgClr = inputAll[1].value;
+            urlObj.txtClr = inputAll[2].value;
+            
+            let urlPath = `http://via.placeholder.com/${urlObj.size}/${urlObj.text}/${urlObj.txtClr }/text=${urlObj.txtClr}`;
+            myImg.src = urlPath;
+            textArea.value = urlPath;
+
+            textArea.focus();
+            textArea.value = urlPath;
+
+            navigator.clipboard.writeText(textArea.value)
+             .then(()=>{
+                console.log("text clipboard")
+             })
+             .catch(err =>{
+                console.log("Error copying text: ",err);
+             });
+
+       }
+        
+        inputAll.forEach((currElem)=>{
+          currElem.addEventListener("change",createImagepath);
+        })
+        select.addEventListener("change",createImagepath);
+    </script>
+ </body>
+ </html>
